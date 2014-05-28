@@ -69,7 +69,7 @@ module ``about the stock example`` =
     [<Koan>]
     let ReadsDate() = AssertEquality "2012-03-30" (stockDate testedStockInfo)
 
-    [<Koan>]
+    [<Koan>] 
     let ReadsOpenPrice() = AssertEquality 32.40 (stockOpenPrice testedStockInfo)
 
     [<Koan>]

@@ -1,5 +1,6 @@
 ﻿namespace FSharpKoans
 open FSharpKoans.Core
+open System
 
 //---------------------------------------------------------------
 // Apply Your Knowledge!
@@ -55,8 +56,29 @@ module ``about the stock example`` =
     // tests for yourself along the way. You can also try 
     // using the F# Interactive window to check your progress.
 
+    let stockInfo (stockLine:string) = stockLine.Split [| ',' |]
+    let stockDate (si:string []) = si.[0]
+    let stockOpenPrice (si:string []) = Double.Parse si.[1] 
+    let stockClosePrice (si:string []) = Double.Parse si.[4]
+    let stockVariance (si:string []) = abs <| stockClosePrice si - stockOpenPrice si
+    
+    let maxVarianceDate sis = stockDate <| List.maxBy stockVariance sis
+
+    let testedStockInfo = stockInfo stockData.[1]
+
+    [<Koan>]
+    let ReadsDate() = AssertEquality "2012-03-30" (stockDate testedStockInfo)
+
+    [<Koan>]
+    let ReadsOpenPrice() = AssertEquality 32.40 (stockOpenPrice testedStockInfo)
+
+    [<Koan>]
+    let ReadsClosePrice() = AssertEquality 32.26 (stockClosePrice testedStockInfo)
+
+    [<Koan>]
+    let CalculatesVariance() = AssertEquality 0.14 <| Math.Round((stockVariance testedStockInfo), 2)
+
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
-        
-        AssertEquality "2012-03-13" result
+      let result = maxVarianceDate << List.map stockInfo << List.tail <| stockData
+      AssertEquality "2012-03-13" result
